@@ -9,6 +9,7 @@ public class AStar {
     Point start, target;
     MinHeap mh = new MinHeap();
     public double coefficient = 3.0;
+    int count = 0;
 
 
 
@@ -73,61 +74,6 @@ public class AStar {
         Gui.target = pt;
     }
 
-    public void FanTail(MyVertex pre, MyVertex center, int div, double coefficient) {
-
-        MyVertex next = new MyVertex(new Point(center.pt.x + (center.pt.x - pre.pt.x), center.pt.y + (center.pt.y - pre.pt.y)), 0, 0, center);
-        next.h = Distance(next.pt, target) * coefficient;
-        next.cost = center.cost + l;
-
-        if (next.pt.x >= 0 && next.pt.x < _width && next.pt.y >= 0 && next.pt.y < _height) {
-            double step = alpha / (double) div;
-            double sum = 0;
-            while (sum < alpha) {
-                double rad = Math.toRadians(sum);
-
-                Point pt = new Point((int)Math.round ((next.pt.x - center.pt.x) * Math.cos(rad) - ((next.pt.y - center.pt.y) * Math.sin(rad)) + center.pt.x),
-                        (int)Math.round ((next.pt.x - center.pt.x) * Math.sin(rad) + ((next.pt.y - center.pt.y) * Math.cos(rad)) + center.pt.y));
-
-                if (pt.x >= 0 && pt.x < _width && pt.y >= 0 && pt.y < _height)
-                    if (!InterSect(center.pt, pt)) {
-                        map[pt.x][pt.y] = 5;
-                        mh.insert(new MyVertex(pt, Distance(pt, target) * coefficient, Distance(center.pt,pt) + center.cost, center));
-                    }
-                sum += step;
-            }
-            step = alpha / (double) div;
-            sum = 0;
-            while (sum < alpha) {
-                double rad = Math.toRadians(-sum);
-                Point pt = new Point((int)Math.round ((next.pt.x - center.pt.x) * Math.cos(rad) - ((next.pt.y - center.pt.y) * Math.sin(rad)) + center.pt.x),
-                        (int)Math.round ((next.pt.x - center.pt.x) * Math.sin(rad) + ((next.pt.y - center.pt.y) * Math.cos(rad)) + center.pt.y));
-                if (pt.x >= 0 && pt.x < _width && pt.y >= 0 && pt.y < _height)
-                    if (!InterSect(center.pt, pt)) {
-                        map[pt.x][pt.y] = 5;
-                        mh.insert(new MyVertex(pt, Distance(pt, target) * coefficient, Distance(center.pt,pt) + center.cost, center));
-                    }
-                sum += step;
-            }
-        }
-    }
-
-    public void FirstFanTail(MyVertex start, double coefficient) {
-        if (start.pt.x >= 0 && start.pt.x < _width && start.pt.y >= 0 && start.pt.y < _height) {
-            double step = 1;
-            double sum = 0;
-            while (sum < 359) {
-                double rad = Math.toRadians(sum);
-                Point pt = new Point((int) (start.pt.x + l * Math.cos(rad)), (int) (start.pt.y + l * Math.sin(rad)));
-                if (pt.x >= 0 && pt.x < _width && pt.y >= 0 && pt.y < _height)
-                    if (!InterSect(start.pt, pt)) {
-                        map[pt.x][pt.y] = 5;
-                        mh.insert(new MyVertex(pt, Distance(pt, target) * coefficient, Distance(start.pt,pt), start));
-                    }
-                sum += step;
-            }
-        }
-    }
-
     public static double Distance(Point p1, Point p2) {
         if(p1 != null && p2 !=null)
         return Math.sqrt(((p2.x - p1.x) * (p2.x - p1.x)) + ((p2.y - p1.y) * (p2.y - p1.y)));
@@ -161,36 +107,6 @@ public class AStar {
         return false;
     }
 
-    int count =0;
-    public void RunAlgorithm() {
-        MyVertex vt0 = new MyVertex(start, Distance(start, target), 0, null);
-        FirstFanTail(vt0, coefficient);
-
-        //boolean flag = true;
-        while (!mh.isEmpty()) {
-            MyVertex vt1 = mh.extractMin();
-
-            mh.ProcessedVertices.add(vt1);
-            if(vt1.h / coefficient < l ){
-                FindPath(vt1);
-                System.out.println("\n Total Path Length is: " + (vt1.cost+vt1.h));
-                break;
-            }
-            FanTail(vt1.pre, vt1, 3, coefficient);
-            //mh.ProcessedVertices.add(vt1);
-            count++;
-        }
-    }
-
-    public void FindPath(MyVertex vtx) {
-        while (vtx != null) {
-            Gui.path.add(vtx);
-            vtx = vtx.pre;
-        }
-        map[start.x][start.y] = 2;
-    }
-
-///////////////////////////////////////// WA*DH //////////////////////////////
     public void clean()
     {
         for (int i = 0; i < _width; i++)

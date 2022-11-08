@@ -61,11 +61,8 @@ public class Main {
         // as.CreateTargetPoint(new Point(490,232));
 
         long startTime = System.nanoTime();
-        // Gui.start.x = Gui.start.x + 200; 
-        // Gui.target.x = Gui.target.x - 300;
         // Gui.path = as.WA_star(Gui.start, Gui.target);
         Gui.path = as.WA_DH(Gui.start, Gui.target);
-        //as.RunAlgorithm();
         long endTime   = System.nanoTime();
         long totalTime = endTime - startTime;
         System.out.println("Total Time is: " + (double)totalTime / 1000000.0 + " milisecond");

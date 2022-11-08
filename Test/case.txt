@@ -13,3 +13,15 @@ t: 759 131
 alpha: 30
 
 l: 30
+
+#for testing the WA*,
+    # do uncomment:
+        Gui.path = as.WA_star(Gui.start, Gui.target);
+    # do comment:
+        Gui.path = as.WA_DH(Gui.start, Gui.target);
+
+#for testing the WA-DH,
+    # do uncomment:
+        Gui.path = as.WA_DH(Gui.start, Gui.target);
+    # do comment:
+        Gui.path = as.WA_star(Gui.start, Gui.target);
