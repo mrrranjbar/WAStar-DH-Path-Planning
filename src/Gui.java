@@ -18,6 +18,7 @@ class Gui extends JFrame{
         setSize(_width,_height);
     }
 
+    // boolean isFirst = true;
     public void paint(Graphics g) {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
@@ -39,6 +40,11 @@ class Gui extends JFrame{
             g.setColor(Color.black);
             g.drawOval(path.get(i).pt.x,path.get(i).pt.y , 2, 2);
         }
+
+        // if(isFirst){
+        //     paint(g);
+        //     isFirst = false;
+        // }
     }
 
 }
