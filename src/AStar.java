@@ -255,7 +255,12 @@ public class AStar {
             MyVertex vt1 = mh.extractMin();
 
             mh.ProcessedVertices.add(vt1);
-            if(vt1.h / coefficient < l){
+            double _x1 = vt1.pt.x - vt1.pre.pt.x;
+            double _y1 = vt1.pt.y - vt1.pre.pt.y;
+            double _x2 = goalPt.x - vt1.pt.x;
+            double _y2 = goalPt.y - vt1.pt.y;
+            double _dot_product = (_x2 * _x1) + (_y1 * _y2);
+            if(vt1.h / coefficient < l && _dot_product > Math.cos(Math.toRadians(alpha)) * Math.sqrt( _x1 * _x1 + _y1 * _y1 ) * Math.sqrt( _x2 * _x2 + _y2 * _y2 )){
                 MyVertex endPt = new MyVertex(goalPt, vt1.cost+vt1.h, 0, vt1);
                 FindPath(endPt, path);
                 break;
